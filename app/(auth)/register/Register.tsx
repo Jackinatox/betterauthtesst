@@ -1,10 +1,16 @@
 "use client"
 
-import { authClient } from '@/utils/auth/auth-client';
+import { authClient, useSession } from '@/utils/auth-client';
 import { useState } from 'react';
 
 function RegisterComponent() {
     const [form, setForm] = useState({ username: '', email: '', password: '' });
+
+    const { data: session} = useSession();
+
+    if (session?.user.role === "admin")  {
+        
+    }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setForm({ ...form, [e.target.name]: e.target.value });
@@ -17,8 +23,12 @@ function RegisterComponent() {
             name: form.username,
             password: form.password,
         });
-        alert('Registered!');
+        if (!error) {
+            alert('Registered!');
+        }
     };
+
+    
 
     return (
         <div style={{ maxWidth: 400, margin: '40px auto', padding: 24, border: '1px solid #ddd', borderRadius: 8, boxShadow: '0 2px 8px rgba(0,0,0,0.05)', background: '#fff' }}>
