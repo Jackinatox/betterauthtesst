@@ -21,12 +21,12 @@ model User {
   emailVerified Boolean
   image         String?
   ptAPIKey      String?
-  createdAt     DateTime
-  updatedAt     DateTime
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
   sessions      Session[]
   accounts      Account[]
 
-  role       String?
+  role       String @default("user")
   banned     Boolean?
   banReason  String?
   banExpires DateTime?
@@ -39,8 +39,8 @@ model Session {
   id        String   @id
   expiresAt DateTime
   token     String
-  createdAt DateTime
-  updatedAt DateTime
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   ipAddress String?
   userAgent String?
   userId    String
@@ -65,8 +65,8 @@ model Account {
   refreshTokenExpiresAt DateTime?
   scope                 String?
   password              String?
-  createdAt             DateTime
-  updatedAt             DateTime
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
 
   @@map("account")
 }
@@ -76,8 +76,8 @@ model Verification {
   identifier String
   value      String
   expiresAt  DateTime
-  createdAt  DateTime?
-  updatedAt  DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 
   @@map("verification")
 }
