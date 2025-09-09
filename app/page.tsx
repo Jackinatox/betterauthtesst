@@ -1,9 +1,18 @@
 "use client"
 
-import { useSession } from "@/utils/auth-client";
-import Image from "next/image";
+import { authClient, useSession } from "@/utils/auth-client";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  const [info, setInfo] = useState("");
+  useEffect(() => {
+    const fetchAccounts = async () => {
+      const accounts = await authClient.listAccounts();
+      setInfo(JSON.stringify(accounts, null, 2));
+    };
+
+    fetchAccounts();
+  }, []);
   const { data: session } = useSession();
 
   if (!session) {
@@ -21,7 +30,13 @@ export default function Home() {
     <div>
       <h1 className="text-4xl font-bold">Welcome back, {session.user.name}!</h1>
       <p className="text-lg text-gray-600">You are logged in as {session.user.email}.</p>
-      <p>Your role is: {session.user.role}</p>
+      <pre className="bg-gray-100 p-4 rounded mt-6 overflow-auto text-sm">
+        Session: {JSON.stringify(session, null, 2)}
+      </pre>
+
+      <pre className="bg-gray-100 p-4 rounded mt-6 overflow-auto text-sm">
+        {info || "Loading account info..."}
+      </pre>
     </div>
   );
 }

@@ -35,6 +35,20 @@ export const auth = betterAuth({
 
                 })
             }
+        },
+        session: {
+            create: {
+                before: async (session, context) => {
+                    console.log(JSON.stringify(context, null, 2));
+
+                    return {
+                        data: {
+                            ...session,
+
+                        }
+                    }
+                },
+            }
         }
     },
     plugins: [
